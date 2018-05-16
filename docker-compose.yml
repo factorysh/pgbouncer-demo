@@ -1,0 +1,27 @@
+version: "3"
+services:
+    postgresql:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: ${PASSWORD}
+            POSTGRES_USER: test_user
+            POSTGRES_DB: test_db
+
+    pgbouncer:
+        build: .
+        environment:
+            DBNAME: test_db
+            USER: test_user
+            PASSWORD: ${PASSWORD}
+        links:
+            - postgresql:db
+        expose:
+            - 6432
+
+    client:
+        image: bearstech/debian:stretch
+        environment:
+            POSTGRES_PASSWORD: ${PASSWORD}
+        links:
+            - pgbouncer
