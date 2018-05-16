@@ -17,11 +17,17 @@ services:
         links:
             - postgresql:db
         expose:
-            - 6432
+            - 5432
+        ports:
+            - 5432
 
     client:
-        image: bearstech/debian:stretch
+        build:
+            context: .
+            dockerfile: Dockerfile.client
         environment:
-            POSTGRES_PASSWORD: ${PASSWORD}
+            PASSWORD: ${PASSWORD}
+            USER: test_user
+            DBNAME: test_db
         links:
-            - pgbouncer
+            - pgbouncer:db
