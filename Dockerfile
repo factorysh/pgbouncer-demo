@@ -7,9 +7,10 @@ RUN apt-get update &&\
     && rm -rf /var/lib/apt/lists/*
 
 COPY pgbouncer.ini /etc/pgbouncer/pgbouncer.tpl
+COPY entrypoint /opt/entrypoint
 
 USER postgres
+EXPOSE 5432
 
-CMD envsubst < /etc/pgbouncer/pgbouncer.tpl > /etc/pgbouncer/pgbouncer.ini &&\
-    echo '"${USER}" "${PASSWORD}"' > /etc/pgbouncer/userlist.txt &&\
-    pgbouncer /etc/pgbouncer/pgbouncer.ini
+ENTRYPOINT ["/opt/entrypoint"]
+CMD ["pgbouncer",  "/etc/pgbouncer/pgbouncer.ini"]

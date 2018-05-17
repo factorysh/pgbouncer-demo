@@ -16,10 +16,6 @@ services:
             PASSWORD: ${PASSWORD}
         links:
             - postgresql:db
-        expose:
-            - 5432
-        ports:
-            - 5432
 
     client:
         build:
