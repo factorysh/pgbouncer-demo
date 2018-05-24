@@ -10,3 +10,8 @@ Lancer Postgresql et son bouncer :
 Lancer psql qui se connecte au bouncer :
 
     docker-compose run client
+
+Licence
+-------
+
+3 terms BSD licence, ©2018 Mathieu Lecarme
