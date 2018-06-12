@@ -7,6 +7,10 @@ services:
             POSTGRES_USER: test_user
             POSTGRES_DB: test_db
             POSTGRES_PASSWORD: ${PASSWORD}
+        volumes:
+            - ./pgbouncer.sql:/docker-entrypoint-initdb.d/pgbouncer.sql
+        ports:
+            - 5432
 
     pgbouncer:
         build: .
