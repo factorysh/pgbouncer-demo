@@ -9,8 +9,6 @@ services:
             POSTGRES_PASSWORD: ${PASSWORD}
         volumes:
             - ./pgbouncer.sql:/docker-entrypoint-initdb.d/pgbouncer.sql
-        ports:
-            - 5432
 
     pgbouncer:
         build: .
@@ -20,6 +18,7 @@ services:
             PASSWORD: ${PASSWORD}
         links:
             - postgresql:db
+        command: pgbouncer -v /etc/pgbouncer/pgbouncer.ini
 
     client:
         build:
@@ -30,4 +29,5 @@ services:
             DBNAME: test_db
             PASSWORD: ${PASSWORD}
         links:
+            - postgresql
             - pgbouncer:db
