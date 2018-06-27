@@ -31,4 +31,16 @@ services:
             PASSWORD: ${PASSWORD}
         links:
             - postgresql
-            - pgbouncer:db
+            - pgbouncer
+
+    client_pgbouncer:
+        hostname: client
+        build:
+            context: .
+            dockerfile: Dockerfile.client
+        environment:
+            USER: test_user
+            DBNAME: test_db
+            PASSWORD: ${PASSWORD}
+        links:
+            - pgbouncer
