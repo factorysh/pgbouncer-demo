@@ -7,15 +7,18 @@ services:
             POSTGRES_USER: test_user
             POSTGRES_DB: test_db
             POSTGRES_PASSWORD: ${PASSWORD}
+        volumes:
+            - ./pgbouncer.sql:/docker-entrypoint-initdb.d/pgbouncer.sql
 
     pgbouncer:
+        hostname: pgbouncer
         build: .
         environment:
             USER: test_user
             DBNAME: test_db
             PASSWORD: ${PASSWORD}
         links:
-            - postgresql:db
+            - postgresql
 
     client:
         build:
@@ -26,4 +29,17 @@ services:
             DBNAME: test_db
             PASSWORD: ${PASSWORD}
         links:
-            - pgbouncer:db
+            - postgresql
+            - pgbouncer
+
+    client_pgbouncer:
+        hostname: client
+        build:
+            context: .
+            dockerfile: Dockerfile.client
+        environment:
+            USER: test_user
+            DBNAME: test_db
+            PASSWORD: ${PASSWORD}
+        links:
+            - pgbouncer

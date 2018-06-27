@@ -2,7 +2,13 @@
 
 set -e
 
-envsubst < /etc/pgbouncer/pgbouncer.tpl > /etc/pgbouncer/pgbouncer.ini
-echo '"${USER}" "${PASSWORD}"' | envsubst > /etc/pgbouncer/userlist.txt
+echo "options randomize-case:0" >> /etc/resolv.conf
 
-exec "$@"
+envsubst < /etc/pgbouncer/pgbouncer.tpl > /etc/pgbouncer/pgbouncer.ini
+echo '"pgbouncer" "super_secret"' > /etc/pgbouncer/userlist.txt
+
+echo "postgresql:5432:*:pgbouncer:super_secret" >> /var/lib/postgresql/.pgpass
+chown postgres /var/lib/postgresql/.pgpass
+chmod 400 /var/lib/postgresql/.pgpass
+
+exec gosu postgres "$@"
