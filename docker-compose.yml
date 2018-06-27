@@ -11,14 +11,15 @@ services:
             - ./pgbouncer.sql:/docker-entrypoint-initdb.d/pgbouncer.sql
 
     pgbouncer:
+        hostname: pgbouncer
         build: .
         environment:
             USER: test_user
             DBNAME: test_db
             PASSWORD: ${PASSWORD}
         links:
-            - postgresql:db
-        command: pgbouncer -v /etc/pgbouncer/pgbouncer.ini
+            - postgresql
+        command: /usr/sbin/pgbouncer -v /etc/pgbouncer/pgbouncer.ini
 
     client:
         build:
