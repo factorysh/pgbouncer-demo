@@ -19,7 +19,6 @@ services:
             PASSWORD: ${PASSWORD}
         links:
             - postgresql
-        command: /usr/sbin/pgbouncer -v /etc/pgbouncer/pgbouncer.ini
 
     client:
         build:
